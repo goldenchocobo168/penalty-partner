@@ -29,7 +29,7 @@ Ignore raw signup count as a success signal. Every change must protect the three
 funny copy lives in `public/copy.json` (static, no AI).
 
 ## Ground truth — verify LIVE every cycle (docs lie, ground truth wins)
-- Live app: **https://push-or-pay.netlify.app**
+- Live app: **https://pushorpay.netlify.app**
 - Product spec (source of truth): `idea/Push or Pay idea.pdf` + `README.md`
 - Repo: **goldenchocobo168/push-or-pay** (`GH_TOKEN` from `~/.config/last30days/.env`, `ghp_…`)
 - Local worktree: `/root/push-or-pay`

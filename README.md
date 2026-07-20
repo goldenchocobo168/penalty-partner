@@ -13,7 +13,7 @@ Built from the product spec in [`idea/Push or Pay idea.pdf`](idea/), Elon-5P app
 transfer is explicitly **not** built — validate the funny behavior first).
 
 ## Live
-- App: **https://push-or-pay.netlify.app**
+- App: **https://pushorpay.netlify.app**
 - Analytics (admin-gated): **/admin** — signups, pranks, push-up sessions, retention, shares.
 - Repo: **github.com/goldenchocobo168/push-or-pay**
 
