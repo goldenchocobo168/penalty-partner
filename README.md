@@ -9,6 +9,10 @@ the lovable final boss — **profits** (a virtual penalty) and gets to cheer, he
 stakes*. Built to make couples **laugh while building habits together**. The most important
 metric: *"would someone send this screenshot to their spouse?"*
 
+<p align="center"><img src="docs/screenshot-partner-view.png" width="380" alt="Partner's watcher view: 'E2E Sam did today's push-ups. You earn nothing 😑'"></p>
+
+*The partner's view when the streak survives — the schadenfreude moment this whole app is built around.*
+
 Built from the product spec in [`idea/Push or Pay idea.pdf`](idea/), Elon-5P applied (real PayNow
 transfer is explicitly **not** built — validate the funny behavior first).
 
