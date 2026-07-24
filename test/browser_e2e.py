@@ -2,10 +2,11 @@
 """Real-browser E2E (v3) via CDP for Push or Pay. Drives the playful flow with
 real clicks: landing -> warning -> create -> invite -> dashboard -> push-up
 session -> complete -> watcher invitation -> accept -> watcher dashboard."""
-import json, time, sys, urllib.request, base64, websocket
+import json, os, time, sys, urllib.request, base64, websocket
 
 CDP = "http://localhost:9222"
 BASE = sys.argv[1] if len(sys.argv) > 1 else "https://pushorpay.netlify.app"
+TEST_KEY = os.environ.get("TIBO_TEST_KEY", "")
 
 def http(path, method="GET"): return json.load(urllib.request.urlopen(urllib.request.Request(CDP + path, method=method)))
 tab = http("/json/new?" + BASE + "/", method="PUT"); tid = tab["id"]
@@ -22,6 +23,9 @@ def js(e):
     if "exceptionDetails" in r: raise RuntimeError("JS: " + json.dumps(r["exceptionDetails"])[:200])
     return r.get("result", {}).get("value")
 cmd("Page.enable")
+cmd("Network.enable")
+if TEST_KEY:
+    cmd("Network.setExtraHTTPHeaders", {"headers": {"x-tibo-test-key": TEST_KEY}})
 def goto(u): cmd("Page.navigate", {"url": u}); time.sleep(3)
 
 fails = []
