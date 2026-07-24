@@ -49,6 +49,7 @@ function view(c, role) {
   };
   // The reveal only ever fires for the doer, once, at day 19+, pre-unlock.
   if (role === "owner") base.secret_reveal = (m.streak >= 19 && !c.secret_unlocked && !c.secret_reveal_shown_at);
+  if (role === "owner") base.prank_intro = (c.created_via === "prank" && !c.owner_intro_seen);
   if (role === "owner") {
     base.invite_link = `/c/${c.id}?t=${c.partner_token}`;
     // "Your wife raised your Lazy Tax 🚨" banner: latest watcher change the owner hasn't seen.
@@ -207,6 +208,13 @@ export default async (req) => {
     if (action === "secret_seen") {
       if (role !== "owner") return json({ error: "owner only" }, 403);
       if (!c.secret_reveal_shown_at) { c.secret_reveal_shown_at = Date.now(); await store.setJSON(id, c); }
+      return json(view(c, role));
+    }
+
+    // ---- intro_seen (the prank-mode doer's one-time cold-landing intro) --
+    if (action === "intro_seen") {
+      if (role !== "owner") return json({ error: "owner only" }, 403);
+      if (!c.owner_intro_seen) { c.owner_intro_seen = Date.now(); await store.setJSON(id, c); }
       return json(view(c, role));
     }
 
