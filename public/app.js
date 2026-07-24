@@ -279,8 +279,24 @@
     document.getElementById("notYet").onclick = () => renderOwnerDashboard({ ...d, secret_reveal: false });
   }
 
+  // ============ Prank mode — the cold-landed doer's one-time intro ============
+  function renderPrankIntro(d) {
+    api("intro_seen").catch(() => {}); // burn it: appears once, never again
+    app.innerHTML = `
+      <div class="secret-veil">
+        <div class="secret-inner">
+          <div class="lock">😈</div>
+          <p class="s-line"><b>${esc(d.partner_name)}</b> just challenged you.</p>
+          <p class="s-big">${d.daily_target} push-ups a day.</p>
+          <p class="s-line">Skip a day and they collect ${lazyLabel(d)}. This is <b>Push or Pay</b> — a fun game, not a diet plan.</p>
+          <button class="btn fire lg" id="letsGo">Let's go 💪</button>
+        </div>
+      </div>`;
+    document.getElementById("letsGo").onclick = () => renderOwnerDashboard({ ...d, prank_intro: false });
+  }
+
   function render(d) {
-    if (d.role === "owner") { if (d.secret_reveal) return renderSecretReveal(d); return renderOwnerDashboard(d); }
+    if (d.role === "owner") { if (d.prank_intro) return renderPrankIntro(d); if (d.secret_reveal) return renderSecretReveal(d); return renderOwnerDashboard(d); }
     if (d.accepted) return renderWatcher(d);
     return renderInvitation(d);
   }
