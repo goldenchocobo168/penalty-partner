@@ -7,6 +7,7 @@ export const config = { path: "/api" };
 
 const MAX_NAME = 40;
 const ADMIN_KEY = process.env.PP_ADMIN_KEY || "";
+const TEST_KEY = process.env.TIBO_TEST_KEY || "";
 
 function json(body, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -91,6 +92,7 @@ export default async (req) => {
       if (!Number.isFinite(penalty)) penalty = currency === "Rp" ? 10000 : 10;
       penalty = Math.min(100000000, Math.max(1, penalty));
       const created_via = b.created_via === "prank" ? "prank" : "self";
+      const is_test = !!(TEST_KEY && req.headers.get("x-tibo-test-key") === TEST_KEY);
 
       const c = {
         id: newId(),
@@ -99,6 +101,7 @@ export default async (req) => {
         penalty_amount: penalty,
         currency,
         created_via,
+        is_test,
         owner_token: randomUUID(),
         partner_token: randomUUID(),
         start_date: todaySGT(),
@@ -135,6 +138,7 @@ export default async (req) => {
       for (const b of blobs) {
         const c = await store.get(b.key, { type: "json" });
         if (!c || !c.id) continue;
+        if (c.is_test) continue; // exclude tagged E2E/verification rows from all North Star totals
         signups++;
         if (c.created_via === "prank") pranks++;
         if (c.partner_first_seen) partners++;
